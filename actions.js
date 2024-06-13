@@ -16,7 +16,6 @@ export function startDrone(droneName, button) {
 
 // Function to stop a drone
 export function stopDrone(droneName) {
-  console.log('calling the fund')
   fetch(`${MYOCARDIUM_URL}/stop-drone?id=${droneName}`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
