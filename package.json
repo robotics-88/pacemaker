@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "rosnodejs": "^3.1.0",
+    "ws": "^8.13.0",
+    "@robotics-88/mapversation": "^1.0.9"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "build-container": "docker build -t pacemaker .",
+    "start-container": "docker run --rm --net=host pacemaker"
+
+  },
+  "type": "module",
+  "name": "fake-heartbeat",
+  "description": "This has a private npm package installed.",
+  "version": "1.0.0",
+  "main": "run-fakeheartbeat.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
