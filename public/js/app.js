@@ -2,7 +2,7 @@
  * Just adding the buttons and functionality to the HTML
  */
 
-let droneNames = ['rosy-maple', 'oak-beauty', 'old-lady', 'magpie']
+let droneNames = ['rosy-maple', 'oak-beauty', 'garden-tiger', 'early-grey', 'old-lady', 'magpie']
 
 // Function to create HTML for drone controls
 function createDroneControls() {
@@ -13,11 +13,15 @@ function createDroneControls() {
 
     let startButton = document.createElement('button')
     startButton.textContent = 'Start'
-    startButton.addEventListener('click', () => startDrone(droneName, startButton))
+    startButton.addEventListener('click', function () {
+      startDrone(droneName, this)
+    })
 
     let stopButton = document.createElement('button')
     stopButton.textContent = 'Stop'
-    stopButton.addEventListener('click', () => stopDrone(droneName))
+    stopButton.addEventListener('click', function () { 
+      stopDrone(droneName, startButton)
+    })
 
     let droneNameSpan = document.createElement('span')
     droneNameSpan.textContent = droneName
@@ -31,12 +35,12 @@ function createDroneControls() {
 }
 
 // Function to start a drone
-function startDrone(droneName, button) {
+function startDrone(droneName, startButton) {
   console.log(`Starting drone: ${droneName}`)
   fetch(`/start-drone?id=${droneName}&interval=${1000}`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
-      button.style.backgroundColor = 'blue'
+      startButton.style.backgroundColor = 'lightgreen'
     })
     .catch(error => {
       console.error(error)
@@ -45,12 +49,11 @@ function startDrone(droneName, button) {
 }
 
 // Function to stop a drone
-function stopDrone(droneName) {
-  console.log('calling the fund')
+function stopDrone(droneName, startButton) {
   fetch(`/stop-drone?id=${droneName}`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      startButton.style.removeProperty('background-color')
     })
     .catch(error => {
       console.error(error)
