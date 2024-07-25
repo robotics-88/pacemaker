@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build-container": "docker build -t pacemaker .",
+    "build-image": "docker build -t pacemaker .",
     "start-container": "docker run --rm --net=host pacemaker"
   },
   "type": "module",

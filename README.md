@@ -1,4 +1,4 @@
-# Installing a Private NPM Package
+## Installing a Private NPM Package
 
 This has a private npm package installed.
 
@@ -14,4 +14,64 @@ Create a `.npmrc` file with this content:
 Replace `YOUR_PERSONAL_ACCESS_TOKEN` with a token generated through your GitHub account.
 
 **Remember to add `.npmrc` to your `.gitignore` file.**
+
+# Using Pacemaker
+
+Make sure you follow the steps above to sucessfully install all the necessary deps
+
+If you haven't added your user to the Docker group and still need 'sudo' to run Docker commands,
+the automated creation of containers will be an issue
+
+1. create the Docker group (if it doesn't already exist)
+
+```bash
+sudo groupadd docker
+```
+
+2. add your user to the Docker group
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+3. apply the new group membership
+
+```bash
+newgrp docker
+```
+
+4. you can verify that it worked by running
+```bash
+docker run hello-world
+```
+
+Once permissions are established
+
+First you need to build the Docker image for the necessary container template
+
+run 
+```bash
+npm build-image
+```
+
+Then start the app:
+
+run 
+```bash
+npm start
+```
+
+this will start the server at port 3000.  
+
+Each time you start a virtual drone, it will start a container running ROS, mapversation and fake-heartbeat.
+
+The drone names are hard coded in, but you need a .env file for pacemaker that includes:
+
+WEBSOCKET_URL
+
+and then any drone passwords in the following format:
+
+DRONE_PASSWORD_*name of the drone*
+ex: DRONE_PASSWORD_rosy-maple
+
 
