@@ -53,7 +53,7 @@ ros.initNode('/fake_drone')
       publishData('task_status', getTaskStatus())
       publishData('health_report', getHealthReport())
       publishData('altitudes', getAltitudes())
-      publishData('alert', eventGenerator())
+      publishData('event', eventGenerator())
     }
     
     setInterval(publishMessages, ONE_SECOND)

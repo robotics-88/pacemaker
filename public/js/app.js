@@ -37,7 +37,7 @@ function createDroneControls() {
 // Function to start a drone
 function startDrone(droneName, startButton) {
   console.log(`Starting drone: ${droneName}`)
-  fetch(`/start-drone?id=${droneName}&interval=${1000}`, { method: 'POST' })
+  fetch(`/start-drone?id=${droneName}`, { method: 'POST' })
     .then(response => response.json())
     .then(data => {
       startButton.style.backgroundColor = 'lightgreen'
