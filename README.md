@@ -75,3 +75,14 @@ DRONE_PASSWORD_*name of the drone*
 ex: DRONE_PASSWORD_rosy-maple
 
 
+To shutdown send the shutdown signal in the terminal
+
+```bash
+^C
+```
+
+It may take a moment because it will automatically shutdown any running containers --
+
+**Don't send multiple shutdown signals as it may cut this process short**
+
+

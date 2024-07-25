@@ -29,15 +29,15 @@ app.post('/start-drone', async (req, res) => {
     let dronePassword = getDronePassword(droneName)
     if(!startedContainers.has(droneName)){
       let containerOptions = {
-          Image: 'pacemaker:latest', 
-          Env: [
-              `DRONE_NAME=${droneName}`,
-              `DRONE_PASSWORD=${dronePassword}`, 
-          ],
-          Cmd: ['./start.sh'],
-          HostConfig: {
-              NetworkMode: 'host'
-          }
+        Image: 'pacemaker:latest', 
+        Env: [
+            `DRONE_NAME=${droneName}`,
+            `DRONE_PASSWORD=${dronePassword}`, 
+        ],
+        Cmd: ['./start.sh'],
+        HostConfig: {
+            NetworkMode: 'host'
+        }
       }
 
       try {
@@ -54,22 +54,20 @@ app.post('/start-drone', async (req, res) => {
 // Stop Drone Container
 app.post('/stop-drone', async (req, res) => {
     let droneName = req.query.id
-
     try {
-        // Find the container by name
-        let containerId = startedContainers.get(droneName)
-        
-        if (containerId) {
-          let containerInstance = docker.getContainer(containerId)
-          await containerInstance.stop()
-          await containerInstance.remove()
-          startedContainers.delete(droneName)
-          res.json({ message: 'Container stopped and removed' })
-        } else {
-          res.status(404).json({ error: 'Container not found' })
-        }
+      let containerId = startedContainers.get(droneName)
+      
+      if (containerId) {
+        let containerInstance = docker.getContainer(containerId)
+        await containerInstance.stop()
+        await containerInstance.remove()
+        startedContainers.delete(droneName)
+        res.json({ message: 'Container stopped and removed' })
+      } else {
+        res.status(404).json({ error: 'Container not found' })
+      }
     } catch (error) {
-        res.status(500).json({ error: error.message })
+      res.status(500).json({ error: error.message })
     }
 })
 
