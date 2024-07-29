@@ -1,0 +1,16 @@
+{
+  "name": "mapversation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run-mapversation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@robotics-88/mapversation": "^1.0.9"
+  },
+  "type": "module"
+}
