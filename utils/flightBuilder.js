@@ -22,11 +22,26 @@ export function flightBuilder(burnUnit) {
   return burnUnit
 }
   
-export function flightCompleter(burnUnit){
+export function completeFlight(burnUnit){
   let currentTrip = burnUnit.trips[0]
   currentTrip.flights
     .find(f => f.status == 'NOT_STARTED').status = 'COMPLETE'
   return burnUnit
+}
+
+export function startFlight(flightId, sessionCookie){
+  let updates = {
+    startTime: Date.now(),
+  }
+  fetch(API_BASE_URL + '/flight/'+ flightId, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': sessionCookie
+    },
+    body: JSON.stringify(updates)
+
+  })
 }
 
 function calculateCenter(points) {
