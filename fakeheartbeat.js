@@ -6,6 +6,9 @@ import {getAltitudes, setAltitudes} from './factories/getAltitudes.js'
 import { flightBuilder, completeFlight, startFlight } from './utils/flightBuilder.js'
 import eventGenerator from './utils/eventGenerator.js'
 
+
+
+
 export default function (options = {}){
 
   
@@ -33,9 +36,9 @@ export default function (options = {}){
   ros.initNode(`/fake_${topicName}`)
     .then(async node => {
       //values to pass to the event generator to simulate tymbal making database updates
-      let flightId = null,
-          droneId = null,
-          executeFlight = false
+      let flightId = null
+      let droneId = null,
+          executeFlight = false,
           sessionCookie = null
 
       console.log('hello')
@@ -67,11 +70,11 @@ export default function (options = {}){
         if(parsedMessage.topic == 'flight_send'){
 
           droneId = parsedMessage.gossip.droneId
-          flightId = parsedMessage.gossip.flightId
+          flightId = parsedMessage.gossip.id
+          
           //start sending flightEvents to database
           executeFlight = true
           startFlight(flightId, sessionCookie)
-          
           setTimeout(() => {
             executeFlight = false
             completeFlight(flightId, sessionCookie)

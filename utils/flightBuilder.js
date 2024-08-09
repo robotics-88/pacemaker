@@ -1,4 +1,4 @@
-
+let API_BASE_URL = process.env.API_BASE_URL
 
 export function flightBuilder(burnUnit) {
   if(!burnUnit.trips[0].flights.length){
@@ -22,11 +22,19 @@ export function flightBuilder(burnUnit) {
   return burnUnit
 }
   
-export function completeFlight(burnUnit){
-  let currentTrip = burnUnit.trips[0]
-  currentTrip.flights
-    .find(f => f.status == 'NOT_STARTED').status = 'COMPLETE'
-  return burnUnit
+export function completeFlight(flightId, sessionCookie){
+  let updates = {
+    endTime: Date.now(),
+    status: "COMPLETE"
+  }
+  fetch(API_BASE_URL + '/flight/'+ flightId, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cookie': sessionCookie
+    },
+    body: JSON.stringify(updates)
+  })
 }
 
 export function startFlight(flightId, sessionCookie){
@@ -40,7 +48,6 @@ export function startFlight(flightId, sessionCookie){
       'Cookie': sessionCookie
     },
     body: JSON.stringify(updates)
-
   })
 }
 
