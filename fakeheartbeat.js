@@ -96,7 +96,7 @@ export default function (options = {}){
 
       let publishMessages = () => {
         publishData('test', 'hello world')
-        publishData('decco_heartbeat', getHeartbeat(randomizer))
+        publishData('decco_heartbeat', getHeartbeat(executeFlight, flightId, sessionCookie))
         publishData('task_status', getTaskStatus())
         publishData('health_report', getHealthReport())
         publishData('altitudes', getAltitudes())

@@ -10,9 +10,9 @@ const LOCATIONS = [
 ]
 
 export default function eventGenerator(flightId, droneId, sessionCookie) {
-  let level = "INFO"
-  if(counter % 100 === 0) level = "WARN"
-  else if(counter % 25 === 0) level = "ERROR"
+  let level = "LOW"
+  if(counter % 100 === 0) level = "HIGH"
+  else if(counter % 25 === 0) level = "MEDIUM"
 
   counter += 1
   let message = {
@@ -22,17 +22,16 @@ export default function eventGenerator(flightId, droneId, sessionCookie) {
     location: LOCATIONS[counter % 4],
     type: "TASK_STATUS",
     description: `This is an alert with severity level ${level}`,
-    timestamp: Date.now(),
+    timestamp: new Date().toISOString(),
   }
 
-  fetch(API_BASE_URL + '/flight-events', {
+  fetch(API_BASE_URL + 'flight-event', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Cookie': sessionCookie
     },
     body: JSON.stringify(message)
-
   })
 
   return message

@@ -24,10 +24,10 @@ export function flightBuilder(burnUnit) {
   
 export function completeFlight(flightId, sessionCookie){
   let updates = {
-    endTime: Date.now(),
+    endTime: new Date().toISOString(),
     status: "COMPLETE"
   }
-  fetch(API_BASE_URL + '/flight/'+ flightId, {
+  fetch(API_BASE_URL + 'flight/'+ flightId, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -39,9 +39,9 @@ export function completeFlight(flightId, sessionCookie){
 
 export function startFlight(flightId, sessionCookie){
   let updates = {
-    startTime: Date.now(),
+    startTime: new Date().toISOString(),
   }
-  fetch(API_BASE_URL + '/flight/'+ flightId, {
+  fetch(API_BASE_URL + 'flight/'+ flightId, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
