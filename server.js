@@ -62,17 +62,34 @@ function cleanupRosNodes() {
 
 // Start Drone Container
 app.post('/start-drone', async (req, res) => {
-  
+  let sessionCookie
   let droneName = req.query.id
   let dronePassword = getDronePassword(droneName)
   if (!startedContainers.has(droneName)) {
-    console.log('start')
+    try {
+      let auth = process.env.DRONE_NAME + ':' + process.env.DRONE_PASSWORD
+      console.log(auth)
+      let response = await fetch(process.env.API_BASE_URL+'authentication/decco', {
+        method: 'POST', 
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name: 'rosy-maple',
+          password: '1234',
+          organizationId: process.env.ORGANIZATION_ID
+        })
+      })
+      if(response.ok){
+        sessionCookie = response.headers.get('set-cookie')
+      }
+      console.log('start')
     let containerOptions = {
       Image: 'pacemaker:latest',
       Env: [
         `DRONE_NAME=${droneName}`,
         `DRONE_PASSWORD=${dronePassword}`,
-        `API_BASE_URL=${process.env.API_BASE_URL}`
+        `API_BASE_URL=${process.env.API_BASE_URL}`,
+        `SESSION_COOKIE=${sessionCookie}`
       ],
       Cmd: ['./start.sh'],
       HostConfig: {
@@ -89,6 +106,12 @@ app.post('/start-drone', async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message })
     }
+    }
+    catch (error) {
+      console.log(error)
+      ("Log in failed")
+    }
+    
   }
 })
 

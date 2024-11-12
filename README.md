@@ -63,7 +63,7 @@ npm start
 
 this will start the server at port 3000.  
 
-Each time you start a virtual drone, it will start a container running ROS, mapversation and fake-heartbeat.
+Each time you start a virtual drone, it will start a container running mapversation and fake-heartbeat.  For now, ROS needs to be running on the local machine
 
 The drone names are hard coded in, but you need a .env file for pacemaker that includes:
 

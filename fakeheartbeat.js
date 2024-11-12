@@ -3,7 +3,7 @@ import getHeartbeat from './factories/getHeartbeat.js'
 import getTaskStatus from './factories/getTaskStatus.js'
 import getHealthReport from './factories/getHealthReport.js'
 import {getAltitudes, setAltitudes} from './factories/getAltitudes.js'
-import { flightBuilder, completeFlight, startFlight } from './utils/flightBuilder.js'
+import { completeFlight } from './utils/flightBuilder.js'
 import eventGenerator from './utils/eventGenerator.js'
 
 
@@ -39,21 +39,19 @@ export default function (options = {}){
       let flightId = null
       let droneId = null,
           executeFlight = false,
-          sessionCookie = null
-
-      console.log('hello')
-      
-
+          sessionCookie = null,
+          operatorId = null
       try {
         let auth = process.env.DRONE_NAME + ':' + process.env.DRONE_PASSWORD
         console.log(auth)
-        let response = await fetch(process.env.API_BASE_URL+'authenticate-drone', {
+        let response = await fetch(process.env.API_BASE_URL+'authentication/decco', {
           method: 'POST', 
           credentials: 'include',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             name: process.env.DRONE_NAME,
-            secretKey: process.env.DRONE_PASSWORD
+            password: process.env.DRONE_PASSWORD,
+            organizationId: process.env.ORGANIZATION_ID
           })
         })
         if(response.ok){
@@ -67,6 +65,7 @@ export default function (options = {}){
       // from Hello Decco
       let receive = message=>{
         let parsedMessage = JSON.parse(message.data)
+        console.log('message from ', parsedMessage.gossip.droneId)
         if(parsedMessage.topic == 'flight_send'){
 
           droneId = parsedMessage.gossip.droneId
@@ -74,14 +73,16 @@ export default function (options = {}){
           
           //start sending flightEvents to database
           executeFlight = true
-          startFlight(flightId, sessionCookie)
+
           setTimeout(() => {
             executeFlight = false
+            console.log('complete flight')
             completeFlight(flightId, sessionCookie)
           }, 30000)
-          publishData('flight_confirm', parsedMessage.gossip)
+          //publishData('flight_confirm', parsedMessage.gossip)
         } 
         if(parsedMessage.topic == 'altitudes') setAltitudes(parsedMessage.gossip)
+        if(parsedMessage.topic == 'heartbeat') operatorId = parsedMessage.gossip.operator_id
       } 
 
       node.subscribe(SUBSCRIPTION_TOPIC, ROS_STRING_TYPE, receive)
@@ -97,7 +98,7 @@ export default function (options = {}){
       let publishMessages = () => {
         publishData('test', 'hello world')
         publishData('decco_heartbeat', getHeartbeat(executeFlight, flightId, sessionCookie))
-        publishData('task_status', getTaskStatus())
+        publishData('task_status', getTaskStatus(operatorId))
         publishData('health_report', getHealthReport())
         publishData('altitudes', getAltitudes())
         if(executeFlight) publishData('event', eventGenerator(flightId, droneId, sessionCookie))

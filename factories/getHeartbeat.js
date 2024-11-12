@@ -36,30 +36,19 @@ let getHeartbeat = (executeFlight, flightId, sessionCookie) => {
   
   let latitude = ALL_ROUTE_POINTS[randomizer()][randomizer()][0]
   let longitude = ALL_ROUTE_POINTS[randomizer()][randomizer()][1]
-  if(executeFlight){
-    fetch(API_BASE_URL + `flight/${flightId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cookie': sessionCookie
-      },
-    })
-      .then(data => data.json())
-      .then(flight => {
-        let updates = {
-          path: [...flight.path, [latitude, longitude]]
-        }
-        fetch(API_BASE_URL + 'flight/'+ flightId, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Cookie': sessionCookie
-          },
-          body: JSON.stringify(updates)
-        })
-      })
-    
-  }
+  // if(executeFlight){
+  //     let timestamp = new Date().toISOString()
+  //     fetch(API_BASE_URL + 'flight/add-point/'+ flightId, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Cookie': sessionCookie
+  //       },
+  //       body: JSON.stringify({
+  //         point: [ longitude, latitude, timestamp]
+  //       })
+  //     })    
+  // }
 
 
   return (

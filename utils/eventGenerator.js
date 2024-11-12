@@ -9,6 +9,11 @@ const LOCATIONS = [
   [41.4964836, -71.3080029]
 ]
 
+let flipCoordinates = (latLng) => {
+  let [ lat, lng ] = latLng
+  return [lng, lat]
+}
+
 export default function eventGenerator(flightId, droneId, sessionCookie) {
   let level = "LOW"
   if(counter % 100 === 0) level = "HIGH"
@@ -16,13 +21,16 @@ export default function eventGenerator(flightId, droneId, sessionCookie) {
 
   counter += 1
   let message = {
-    droneId,
+    deccoId: droneId,
     flightId,
     level,
-    location: LOCATIONS[counter % 4],
+    location: {
+      type: 'Point', 
+      coordinates: flipCoordinates(LOCATIONS[counter % 4])
+    },
     type: "TASK_STATUS",
     description: `This is an alert with severity level ${level}`,
-    timestamp: new Date().toISOString(),
+    startTime: new Date().toISOString(),
   }
 
   fetch(API_BASE_URL + 'flight-event', {

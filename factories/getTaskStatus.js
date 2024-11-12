@@ -7,12 +7,12 @@ const GOAL_POINTS = [
 
 let counter = 0
 
-let getTaskStatus = () => (
+let getTaskStatus = (operatorId = null) => (
     {
         flightMode: "RATITUDE",
-        goal: GOAL_POINTS[counter % 4],
-        taskStatus: ++counter % 2 == 0 ? 'f' : 'f',
-        operatorId: null,
+        goal: {latitude: GOAL_POINTS[counter % 4][0], longitude: GOAL_POINTS[counter % 4][1]},
+        taskStatus: ++counter % 2 == 0 ? 'READY' : 'READY',
+        operatorId,
         isArmed: true
     }
 )
