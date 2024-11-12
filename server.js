@@ -74,8 +74,8 @@ app.post('/start-drone', async (req, res) => {
         credentials: 'include',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          name: 'rosy-maple',
-          password: '1234',
+          name: droneName,
+          password: dronePassword,
           organizationId: process.env.ORGANIZATION_ID
         })
       })

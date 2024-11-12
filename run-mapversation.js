@@ -1,4 +1,4 @@
-import mapversation from '@robotics-88/mapversation'
+import mapversation from './mapversation.js'
 import dotenv from 'dotenv'
 
 // Load environment variables from .env file
