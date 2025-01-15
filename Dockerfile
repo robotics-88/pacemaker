@@ -17,6 +17,11 @@ COPY . .
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 RUN /bin/bash -c "source ~/.bashrc"
 
+# Set environment variables for ROS connection
+# Assuming your roscore is running on the host machine and you want to connect via host's network
+ENV ROS_MASTER_URI=http://docker-desktop:11311
+ENV ROS_HOSTNAME=localhost
+
 # Make the startup script executable
 RUN chmod +x start.sh
 

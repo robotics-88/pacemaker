@@ -11,8 +11,9 @@ dotenv.config()
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-let app = express()
 let docker = new Docker()
+
+let app = express()
 let startedContainers = new Map()
 
 // Serve static HTML files
@@ -30,15 +31,15 @@ async function attachToContainerLogs(container) {
       follow: true,
       stdout: true,
       stderr: true,
-    });
+    })
 
     logStream.on('data', (data) => {
       console.log(data.toString('utf-8'));
-    });
+    })
 
     logStream.on('error', (err) => {
       console.error(`Log stream error: ${err.message}`);
-    });
+    })
 
   } catch (err) {
     console.error(`Failed to attach to container logs: ${err.message}`);
@@ -83,35 +84,36 @@ app.post('/start-drone', async (req, res) => {
         sessionCookie = response.headers.get('set-cookie')
       }
       console.log('start')
-    let containerOptions = {
-      Image: 'pacemaker:latest',
-      Env: [
-        `DRONE_NAME=${droneName}`,
-        `DRONE_PASSWORD=${dronePassword}`,
-        `API_BASE_URL=${process.env.API_BASE_URL}`,
-        `SESSION_COOKIE=${sessionCookie}`
-      ],
-      Cmd: ['./start.sh'],
-      HostConfig: {
-        NetworkMode: 'host'
+      let containerOptions = {
+        Image: 'pacemaker:latest',
+        Env: [
+          `DRONE_NAME=${droneName}`,
+          `DRONE_PASSWORD=${dronePassword}`,
+          `API_BASE_URL=${process.env.API_BASE_URL}`,
+          `SESSION_COOKIE=${sessionCookie}`
+        ],
+        Cmd: ['./start.sh'],
+        HostConfig: {
+          NetworkMode: 'bridge',  // Or specify a custom bridge network
+        }
       }
-    }
+      console.log(containerOptions)
+      try {
+        let container = await docker.createContainer(containerOptions)
+        console.log(container)
+        await container.start()
+        startedContainers.set(droneName, container.id)
+        await attachToContainerLogs(container) // Attach to container logs
 
-    try {
-      let container = await docker.createContainer(containerOptions)
-      await container.start()
-      startedContainers.set(droneName, container.id)
-      await attachToContainerLogs(container) // Attach to container logs
-      res.json({ message: 'Container started successfully' })
+        res.json({ message: 'Container started successfully' })
+      } catch (error) {
+        console.log('errorrrrrr', error)
+        res.status(500).json({ error: error.message })
+      }
     } catch (error) {
-      res.status(500).json({ error: error.message })
-    }
-    }
-    catch (error) {
       console.log(error)
-      ("Log in failed")
+      res.status(500).json({ error: "Log in failed" })
     }
-    
   }
 })
 

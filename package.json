@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@robotics-88/mapversation": "^1.2.0",
     "dockerode": "^4.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

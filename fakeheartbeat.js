@@ -28,7 +28,7 @@ export default function (options = {}){
 
 
   let stageData = (topic, gossip) => {
-    return {data: JSON.stringify({topic, gossip})}
+    return {data: JSON.stringify({topic, gossip, deccoId: 1})}
   }
 
   let randomizer = Math.floor(Math.random() *3)
@@ -44,7 +44,7 @@ export default function (options = {}){
       try {
         let auth = process.env.DRONE_NAME + ':' + process.env.DRONE_PASSWORD
         console.log(auth)
-        let response = await fetch(process.env.API_BASE_URL+'authentication/decco', {
+        let response = await fetch('http://host.docker.internal:9000/'+'authentication/decco', {
           method: 'POST', 
           credentials: 'include',
           headers: {'Content-Type': 'application/json'},
@@ -96,12 +96,13 @@ export default function (options = {}){
       }
 
       let publishMessages = () => {
-        publishData('test', 'hello world')
+        // publishData('test', 'hello world')
         publishData('decco_heartbeat', getHeartbeat(executeFlight, flightId, sessionCookie))
-        publishData('task_status', getTaskStatus(operatorId))
-        publishData('health_report', getHealthReport())
-        publishData('altitudes', getAltitudes())
-        if(executeFlight) publishData('event', eventGenerator(flightId, droneId, sessionCookie))
+        // publishData('task_status', getTaskStatus(operatorId))
+        // publishData('health_report', getHealthReport())
+        // publishData('altitudes', getAltitudes())
+        // console.log('publishing')
+        // if(sessionCookie) publishData('event', eventGenerator(flightId, droneId, sessionCookie))
       }
       
       setInterval(publishMessages, ONE_SECOND)

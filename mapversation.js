@@ -23,8 +23,9 @@ export default async function(options = {}) {
 
   try {
     let auth = process.env.DRONE_NAME + ':' + process.env.DRONE_PASSWORD
-    console.log(auth)
-    let response = await fetch(process.env.API_BASE_URL+'authentication/decco', {
+    console.log("authy: ", auth)
+    let dockerHostUrl = 'http://host.docker.internal:9000/'
+    let response = await fetch(dockerHostUrl+'authentication/decco', {
       method: 'POST', 
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},

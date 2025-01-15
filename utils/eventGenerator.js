@@ -21,8 +21,8 @@ export default function eventGenerator(flightId, droneId, sessionCookie) {
 
   counter += 1
   let message = {
-    deccoId: droneId,
-    flightId,
+    deccoId: 1,
+    flightId: 1,
     level,
     location: {
       type: 'Point', 
@@ -33,14 +33,14 @@ export default function eventGenerator(flightId, droneId, sessionCookie) {
     startTime: new Date().toISOString(),
   }
 
-  fetch(API_BASE_URL + 'flight-event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': sessionCookie
-    },
-    body: JSON.stringify(message)
-  })
+  // fetch(API_BASE_URL + 'flight-event', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Cookie': sessionCookie
+  //   },
+  //   body: JSON.stringify(message)
+  // })
 
   return message
 }

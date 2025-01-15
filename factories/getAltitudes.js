@@ -6,7 +6,7 @@ let getAltitudes = () => (
   {
     max_altitude,
     min_altitude,
-    default_altitude
+    default_altitude,
   }
 )
 

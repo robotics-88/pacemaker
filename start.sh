@@ -21,6 +21,7 @@ source /opt/ros/noetic/setup.bash
 # Start roscore in the background
 # roscore &
 # ROSCORE_PID=$!
+echo Hello!
 
 # Start mapversation (node run-mapversation.js) in the background
 node run-mapversation.js &
