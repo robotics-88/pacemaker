@@ -28,7 +28,7 @@ export default function (options = {}){
 
 
   let stageData = (topic, gossip) => {
-    return {data: JSON.stringify({topic, gossip, deccoId: 1})}
+    return {data: JSON.stringify({topic, gossip, droneId: 1})}
   }
 
   let randomizer = Math.floor(Math.random() *3)
@@ -97,12 +97,13 @@ export default function (options = {}){
 
       let publishMessages = () => {
         // publishData('test', 'hello world')
-        publishData('decco_heartbeat', getHeartbeat(executeFlight, flightId, sessionCookie))
-        // publishData('task_status', getTaskStatus(operatorId))
-        // publishData('health_report', getHealthReport())
-        // publishData('altitudes', getAltitudes())
-        // console.log('publishing')
-        // if(sessionCookie) publishData('event', eventGenerator(flightId, droneId, sessionCookie))
+        let heartbeat = getHeartbeat(executeFlight, flightId, sessionCookie)
+        console.log(heartbeat)
+        publishData('ecco_heartbeat', heartbeat)
+        publishData('task_status', getTaskStatus(operatorId))
+        publishData('health_report', getHealthReport())
+        publishData('altitudes', getAltitudes())
+        publishData('event', eventGenerator(flightId, droneId, sessionCookie))
       }
       
       setInterval(publishMessages, ONE_SECOND)

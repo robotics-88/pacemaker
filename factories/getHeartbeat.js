@@ -2,6 +2,10 @@ const API_BASE_URL = process.env.API_BASE_URL
 
 const HEADINGS = [90, 180, 270, 0]
 const ALTITUDES = [15, 10, 25, 30]
+const SPEEDS = [0, 5, 20, 4]
+
+const BATTERY_LIFE = [99, 50, 25, 10]
+
 const ORIGINAL_ROUTE_POINTS = [
   [41.49986746670859, -71.30984355480228],
   [41.50060672293137, -71.30262708265471],
@@ -56,7 +60,9 @@ let getHeartbeat = (executeFlight, flightId, sessionCookie) => {
       heading: HEADINGS[++counter % 4],
       altitude: ALTITUDES[counter % 4],
       latitude,
-      longitude
+      longitude,
+      groundSpeed: SPEEDS[counter % 4],
+      batteryLife: BATTERY_LIFE[counter % 4]
     }
   )
 }
